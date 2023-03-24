@@ -2,18 +2,20 @@ from django.db import models
 import os
 from django.conf import settings
 from PIL import Image
+from django.utils.text import slugify
+
 
 class Produto(models.Model):
     nome = models.CharField (max_length = 255)
 
-    descricao_cruta = models.TextField (max_length = 255)
+    descricao_curta = models.TextField (max_length = 255)
     descricao_longa = models.TextField ()
     imagem = models.ImageField(
         upload_to = 'produto_imagens/%Y/%m/', blank = True, null = True
     )
-    slug = models.SlugField (unique = True)
-    preco_marketing = models.FloatField (default = 0)
-    preco_marketing_promocional = models.FloatField (default = 0)
+    slug = models.SlugField (unique = True, blank = True, null = True )
+    preco_marketing = models.FloatField (verbose_name = 'Preço')
+    preco_marketing_promocional = models.FloatField (default = 0, verbose_name = 'Preço Promo.')
 
     #TODO Para criar o botao de variação segue modelo abaixo
     tipo = models.CharField ( 
@@ -21,10 +23,19 @@ class Produto(models.Model):
         max_length = 1, 
         choices = (
         
-            ('V', 'Variação'),
+            ('V', 'Variável'),
             ('S', 'Simples'),
         ) 
     )
+
+    def get_preco_formatado (self):
+        return f'R${self.preco_marketing:.2f}'.replace ('.' , ',')
+    get_preco_formatado.short_description = 'Preço'
+
+    def get_preco_promocional_formatado (self):
+        return f'R${self.preco_marketing_promocional:.2f}'.replace ('.' , ',')
+    get_preco_promocional_formatado.short_description = 'Preço Promo.'
+
 
     #TODO Adiciona caminho na Pasta
     @staticmethod
@@ -56,6 +67,10 @@ class Produto(models.Model):
 
     #TODO SALVA IMAGEM E ENVIA
     def save (self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.nome)}'
+            self.slug = slug
+
         super().save (*args, **kwargs)
 
     #TODO SE A IMAGEM FOR ENVIADA ELE REDIMENSIONA 
