@@ -26,16 +26,39 @@ class Produto(models.Model):
         ) 
     )
 
+    #TODO Adiciona caminho na Pasta
     @staticmethod
     def resize_image (img, new_width = 800):
         img_full_path = os.path.join (settings.MEDIA_ROOT, img.name)
-        print(img_full_path)
+
+        #TODO PARA PEGAR A IMAGEM COM PILLOW (LARGURA E ALTURA)
+        img_pil = Image.open (img_full_path)
+        original_width, original_height = img_pil.size
+        
+        if original_width <= new_width:
+            print ('Retornando, largura original menor que a nova largura')
+            img_pil.close ()
+            return
+        """
+        REGRA DE 3 PARA OBTER IMAGEM
+        largura / altura
+        nova_largura / nova altura???
+        """ #TODO REGRA DE 3
+        new_height = round ((new_width *original_height) / original_width)
+
+        #TODO Reduz a imagem 
+        new_img = img_pil.resize ((new_width, new_height), Image.LANCZOS)
+        new_img.save (
+            optimize = True,
+            quality = 50
+        )
+        print ('Imagem foi redimensionada.')
 
     #TODO SALVA IMAGEM E ENVIA
     def save (self, *args, **kwargs):
         super().save (*args, **kwargs)
 
-    #TODO SE A IMAGEM FOR ENVIADA ELE REDIMENCIONA 
+    #TODO SE A IMAGEM FOR ENVIADA ELE REDIMENSIONA 
         max_image_size = 800
         if self.imagem:
             self.resize_image(self.imagem, max_image_size)
@@ -44,4 +67,6 @@ class Produto(models.Model):
     #TODO Retorna o nome do produto criado
     def __str__ (self):
         return self.nome
+    
+
     
