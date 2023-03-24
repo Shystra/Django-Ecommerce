@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #TODO REMOVER DEBUG TOOLBAR
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #TODO REMOVER DEBUG TOOLBAR
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'loja.urls'
@@ -134,9 +140,17 @@ MESSAGE_TAGS = {
     constants.INFO: 'alert.info',
 }
 
+#TODO TEMPO DE DURAÇÃO DA SESSÃO PARA MANIPULAR - 7D
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+#TODO ISSO VAI FAZER PEDIR PARA SALVAR CADA REQUISIÇÃO
+SESSION_SAVE_EVERY_REQUEST = False
 
 
-
+#TODO REMOVER DEBUG TOOLBAR
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 
 # Default primary key field type
