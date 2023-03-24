@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ValidationError
 
+import re
+
+from utils.validacpf import valida_cpf
 
 
 
@@ -50,11 +54,22 @@ class Perfil (models.Model):
                                ))
 
     def __str__(self):
-        return f'{self.usuario.first_name} {self.usuario.last_name}'
+        return f'{self.usuario}'
     
-
+    #TODO CONDIÇÃO PARA O FORMULARIO
     def clean (self):
-        pass
+        error_messages = {} #TODO Isso cria um dicionario e recebe os erros
+
+        if not valida_cpf (self.cpf):
+            error_messages ['cpf'] = 'Digite um CPF Válido'
+
+        if re.search (r'[^0-9]', self.cep) or len (self.cep) < 8:
+            error_messages ['cep'] = 'CEP inválido, digite apenas números.'
+
+        if error_messages:
+            raise ValidationError (error_messages)
+
+
 
     class Meta:
         verbose_name = 'Perfil'
