@@ -25,6 +25,7 @@ urlpatterns = [
 
 
 #TODO REMOVER DEBUG TOOLBAR
+#TODO REALIZAR A INSTALAÇÃO DO DEBUG_TOOLBAR
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
