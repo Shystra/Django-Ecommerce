@@ -69,4 +69,20 @@ class Produto(models.Model):
         return self.nome
     
 
-    
+class Variacao (models.Model):
+    #TODO Quando deletar o produto todas as variações irão juntas
+    produto = models.ForeignKey (Produto, on_delete = models.CASCADE)
+    # --------------------------------------------------------------- #
+    nome = models.CharField (max_length = 50, blank = True, null = True)
+    preco = models.FloatField ()
+    preco_promocional = models.FloatField (default = 0)
+    estoque = models.PositiveIntegerField (default = 1)
+
+#TODO Exibe o nome da variação ou produto
+    def __str__(self):
+        return self.nome or self.produto.nome
+
+#TODO AJUSTA A NOMENCLATURA NO PAINEL
+    class Meta:
+        verbose_name = 'Variação'
+        verbose_name_plural = "Variações"
