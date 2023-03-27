@@ -12,11 +12,25 @@ class ListaProdutos (ListView):
 
 
 
-
-
 class DetalheProduto (View):
     def get (self, *args, **kwargs):
         return HttpResponse ('Detalhe Produto')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class AdicionarAoCarrinho (View):
     def get (self, *args, **kwargs):
