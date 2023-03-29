@@ -71,11 +71,19 @@
                     <table class="table">
                         <tr>
                             <td class="font-weight-bold">Total</td>
-                            <td>R$100000</td>
+                            <td>{{ carrinho|cart_totals|formata_preco }}</td>
                         </tr>
                     </table>
                 </div>
             </div>
+
+        </div class="col-lg mt-auto">
+        <a class="btn btn-lg btn-block btn-primary" href="#">
+            Finalizar a Compra
+        </a>
+    </div>
+</div>
+
 
 
 {% else %}
