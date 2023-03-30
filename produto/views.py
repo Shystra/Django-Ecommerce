@@ -210,7 +210,7 @@ class Carrinho (View):
 
 
 
-class Finalizar (View):
+class ResumoDaCompra (View):
     def get (self, *args, **kwargs):
         return HttpResponse ('Finalizar')
 
